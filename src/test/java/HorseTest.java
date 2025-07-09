@@ -112,13 +112,24 @@ public class HorseTest {
 
 
     @Test
-    public void getMoveTestWhenVerifyGetRandomDouble() {
+    public void getMoveTestVerifyGetRandomDouble() {
         //создание стат. мок-класса
         try (MockedStatic<Horse> horseMockedStatic =  Mockito.mockStatic(Horse.class)) {
             Horse horseSpy = Mockito.spy(new Horse("name", 1, 1)); //создаем spy-объект
             horseSpy.move(); //вызываем метод
             horseMockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9)); //проверяем, вызвался стат. метод в методе выше
 
+        }
+    }
+
+    @Test
+    public void getMoveTestWhenCallThenChangedDistance() {
+        try(MockedStatic<Horse> horseMockedStatic = Mockito.mockStatic(Horse.class)) {
+            Horse horseSpy = Mockito.spy(new Horse("name", 1, 2));
+            horseMockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(0.5);
+            horseSpy.move();
+            double expectedDistance = 2.5;
+            assertEquals(expectedDistance, horseSpy.getDistance());
         }
     }
 }
