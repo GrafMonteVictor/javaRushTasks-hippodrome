@@ -1,11 +1,16 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@ExtendWith(MockitoExtension.class)
 public class HorseTest {
+
     @Test
     public void constructorHorseTestWhenNullThenException() {
         String name = null;
@@ -106,4 +111,14 @@ public class HorseTest {
     }
 
 
+    @Test
+    public void getMoveTestWhenVerifyGetRandomDouble() {
+        //создание стат. мок-класса
+        try (MockedStatic<Horse> horseMockedStatic =  Mockito.mockStatic(Horse.class)) {
+            Horse horseSpy = Mockito.spy(new Horse("name", 1, 1)); //создаем spy-объект
+            horseSpy.move(); //вызываем метод
+            horseMockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9)); //проверяем, вызвался стат. метод в методе выше
+
+        }
+    }
 }
