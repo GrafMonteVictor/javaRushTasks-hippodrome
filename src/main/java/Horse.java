@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 
 public class Horse {
     private final static Logger logger = LogManager.getLogger(Horse.class);
+
     private final String name;
     private final double speed;
     private double distance;
@@ -55,5 +56,17 @@ public class Horse {
 
     public static double getRandomDouble(double min, double max) {
         return (Math.random() * (max - min)) + min;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; //проверка на ссылки
+        if (o == null || getClass() != o.getClass()) return false; //проверка на null и принадлежность к классу
+
+        Horse horse = (Horse) o;
+        //сравнение каждого поля
+        return (name.equals(horse.getName()) &&
+                speed == horse.getSpeed() &&
+                distance == horse.getSpeed());
     }
 }

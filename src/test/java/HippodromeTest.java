@@ -1,2 +1,58 @@
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class HippodromeTest {
+    @Test
+    public void constructorHippodromeTestWhenNullThenException() {
+        assertThrows(IllegalArgumentException.class, () -> Mockito.spy(new Hippodrome(null)));
+    }
+
+    @Test
+    public void constructorHippodromeTestWhenNullThenMessageInException() {
+        String expected = "Horses cannot be null.";
+        try {
+
+            Mockito.spy(new Hippodrome(null));
+        } catch (IllegalArgumentException e) {
+            assertEquals(expected, e.getMessage());
+        }
+    }
+
+    @Test
+    public void constructorHippodromeTestWhenEmptyThenException() {
+        assertThrows(IllegalArgumentException.class, () -> Mockito.spy(new Hippodrome(new ArrayList<>())));
+    }
+
+    @Test
+    public void constructorHippodromeTestWhenEmptyThenMessageInException() {
+        String expected = "Horses cannot be empty.";
+        try {
+            Mockito.spy(new Hippodrome(new ArrayList<>()));
+        } catch (IllegalArgumentException e) {
+            assertEquals(expected, e.getMessage());
+        }
+    }
+
+    @Test
+    public void getHorsesTestWhenInputListThenSameList() {
+        //иниц список
+        //передаем в конструтор
+        //вызываем метод getHorses, сравниваем с исх. списком
+        List<Horse> horseList = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            String name = "Horse_" + i;
+            double speed = Horse.getRandomDouble(0.2, 0.9);
+            horseList.add(new Horse(name, speed));
+        }
+        Hippodrome hippodromeSpy = Mockito.spy(new Hippodrome(horseList));
+
+    }
 }
