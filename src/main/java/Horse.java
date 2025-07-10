@@ -1,6 +1,8 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 import static java.util.Objects.isNull;
 
 public class Horse {
@@ -65,8 +67,13 @@ public class Horse {
 
         Horse horse = (Horse) o;
         //сравнение каждого поля
-        return (name.equals(horse.getName()) &&
+        return name.equals(horse.getName()) &&
                 speed == horse.getSpeed() &&
-                distance == horse.getSpeed());
+                distance == horse.getSpeed();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, speed, distance);
     }
 }
