@@ -1,6 +1,4 @@
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -8,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 public class HippodromeTest {
     @Test
@@ -46,13 +45,29 @@ public class HippodromeTest {
         //иниц список
         //передаем в конструтор
         //вызываем метод getHorses, сравниваем с исх. списком
-        List<Horse> horseList = new ArrayList<>();
+        List<Horse> horseListExpected = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             String name = "Horse_" + i;
             double speed = Horse.getRandomDouble(0.2, 0.9);
-            horseList.add(new Horse(name, speed));
+            horseListExpected.add(new Horse(name, speed));
         }
-        Hippodrome hippodromeSpy = Mockito.spy(new Hippodrome(horseList));
+        Hippodrome hippodromeSpy = Mockito.spy(new Hippodrome(horseListExpected));
+        assertEquals(horseListExpected, hippodromeSpy.getHorses());
+    }
+
+    @Test
+    public void getMoveTestWhenCallMoveThenCallMoveOfHorses() {
+        List<Horse> horseListSpy = Mockito.spy(new ArrayList<>());
+        for (int i = 0; i < 50; i++) {
+            Horse horseMock = Mockito.mock(Horse.class);
+            horseListSpy.add(horseMock);
+        }
+        Hippodrome hippodromeMock = Mockito.spy(new Hippodrome(horseListSpy));
+        hippodromeMock.move();
+        List<Horse> horseListNew = hippodromeMock.getHorses();
+        for (Horse horse: horseListNew) {
+            Mockito.verify(horse).move();
+        }
 
     }
 }
