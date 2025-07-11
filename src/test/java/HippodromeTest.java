@@ -68,6 +68,16 @@ public class HippodromeTest {
         for (Horse horse: horseListNew) {
             Mockito.verify(horse).move();
         }
+    }
 
+    @Test
+    public void getWinnerTest() {
+        List<Horse> horseList = new ArrayList<>();
+        horseList.add(new Horse("name1", 1, 6));
+        horseList.add(new Horse("name2", 4, 10));
+        horseList.add(new Horse("name3", 1, 3));
+        Horse horseExpected = horseList.get(1);
+        Hippodrome hippodrome = new Hippodrome(horseList);
+        assertEquals(horseExpected, hippodrome.getWinner());
     }
 }
